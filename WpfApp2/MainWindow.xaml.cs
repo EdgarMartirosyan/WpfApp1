@@ -10,31 +10,27 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WpfApp1
+namespace WpfApp2
 {
     /// <summary>
-    /// Interaction logic for Suninfo.xaml
+    /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class Suninfo : Window
+    public partial class MainWindow : Window
     {
-       
-
-        public Suninfo()
+        public MainWindow()
         {
             InitializeComponent();
-           
+            
         }
 
-        private async void LoadSunInfo_Click(object sender, RoutedEventArgs e)
+        private async void LoadCompanyInfo_Click(object sender, RoutedEventArgs e)
         {
-            var suninfo = await SunProcessor.LoadSunIformation();
-
-            sunrise.Text = suninfo.Sunrise.ToLongTimeString();
-            sunset.Text = suninfo.Sunset.ToLongTimeString();
+            var companyinfo = await CompanyProcessor.LoadCompanyInfo();
+          //  id.Text = companyinfo.Id.ToString();
+            compname.Text = companyinfo.Compname.ToString();
         }
-
-        
     }
 }

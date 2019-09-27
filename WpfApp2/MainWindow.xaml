@@ -1,17 +1,16 @@
-﻿<Window x:Class="WpfApp1.Suninfo"
+﻿<Window x:Class="WpfApp2.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WpfApp1"
+        xmlns:local="clr-namespace:WpfApp2"
         mc:Ignorable="d"
-        Title="Suninfo" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800">
     <Grid>
         <StackPanel>
-            <Button x:Name="loadSunInfo" Margin="20" Click="LoadSunInfo_Click">load Sun Info</Button>
-            <TextBox x:Name="sunrise" Margin="5"/>
-            <TextBox x:Name="sunset" Margin="5"/>
-            
+            <Button x:Name="companyinfo" Margin="20" Click="LoadCompanyInfo_Click">Load Company Info</Button>
+            <TextBlock x:Name="id" Margin="20"/>
+            <TextBlock x:Name="compname" Margin="20"/>
         </StackPanel>
         
     </Grid>

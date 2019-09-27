@@ -22,11 +22,12 @@ namespace WpfApp1
     {
         private int maxNumber = 0;
         private int currentNumber = 0;
+
         public MainWindow()
         {
             InitializeComponent();
             APIHelper.InitializeClient();
-            nextImageButton.IsEnabled = false;
+           nextImageButton.IsEnabled = false;
         }
        
 
@@ -35,10 +36,12 @@ namespace WpfApp1
         private async Task LoadImage(int imageNumber = 0)
         {
             var comic = await ComicProcessor.LoadCimic(imageNumber);
+
             if (imageNumber == 0)
             {
                 maxNumber = comic.Num;
             }
+
             currentNumber = comic.Num;
             var uriSource = new Uri(comic.Img, UriKind.Absolute);
             comicImage.Source = new BitmapImage(uriSource);
@@ -57,20 +60,16 @@ namespace WpfApp1
                 nextImageButton.IsEnabled = true;
                 await LoadImage(currentNumber);
 
+                if (currentNumber == 1)
+                {
+                    previousImageButton.IsEnabled = false;
+                }
             }
-
-            if (currentNumber == 1)
-            {
-                
-                previousImageButton.IsEnabled = false;
-                
-            }
-
         }
 
         private async void NextImageButton_Click(object sender, RoutedEventArgs e)
         {
-            if (currentNumber<maxNumber)
+            if (currentNumber < maxNumber)
             {
                 currentNumber += 1;
                 previousImageButton.IsEnabled = true;
@@ -83,6 +82,12 @@ namespace WpfApp1
 
             }
 
+        }
+
+        private void SunInformationButton_Click(object sender, RoutedEventArgs e)
+        {
+            Suninfo suninfo = new Suninfo();
+            suninfo.ShowDialog();
         }
     }
 }
