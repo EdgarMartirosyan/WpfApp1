@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -11,35 +12,52 @@ namespace WpfApp3
 {
     public class Processor
     {
-        static HttpClient client = new HttpClient();
-
-
-       /* static async Task RunAsync()
+       
+       
+        public async static Task<Product> LoadIformation()
         {
-            // Update port # in the following line.
-            client.BaseAddress = new Uri("https://api.sunrise-sunset.org/json?lat=36.7201600&lng=-4.4203400");
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
-        }*/
+            string url = "https://api.sunrise-sunset.org/json?lat=36.7201600&lng=-4.4203400";
+            HttpClient httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri(url);
 
-        public static async Task<Product> LoadInfo()
-        {
-            HttpResponseMessage response = await client.GetAsync("https://www.contractor.de/api/?action=getJobsList&type=undefined&keyword");
-            RootObject result = null;
-            if (response.IsSuccessStatusCode)
+            using (HttpResponseMessage response = await httpClient.GetAsync(url))
             {
-                result = await response.Content.ReadAsAsync<RootObject>();
-                //
-                //   return result.Response[0];
-                return result.Response[0];
-                
+                if (response.IsSuccessStatusCode)
+                {
+                    RootObject result = await response.Content.ReadAsAsync<RootObject>();
+
+                    return result.Response[0];
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
             }
-            else
-            {
-                throw new Exception(response.ReasonPhrase);
-            }
-            
         }
+
+
+       /* public MainWindow()
+        {
+            InitializeComponent();
+
+            string URL = "https://www.contractor.de/api/?action=getJobsList&type=undefined&keyword";
+
+            HttpClient client = new HttpClient();
+
+            client.BaseAddress = new Uri(URL);
+
+            var answer = client.GetAsync(URL).Result;
+
+            var JSON = answer.Content.ReadAsStringAsync().Result;
+
+
+
+
+
+            var UVs = JsonConvert.DeserializeObject<RootObject>(JSON);
+
+            this.datagrid_Uvs.ItemsSource = UVs.Response;
+        }*/
     }
 }
+

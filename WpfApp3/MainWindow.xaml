@@ -9,16 +9,17 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="4*"/>
         </Grid.RowDefinitions>
         <StackPanel  Grid.Row="0">
             <Button x:Name="Loadinfo" Margin="20" Padding="5" Content="Load info" Click="Loadinfo_Click"/>
-            <TextBlock x:Name="textblock1" Padding="5" Text="smilik" Margin="20"/>
+
+
         </StackPanel>
-        
-      
+
         <DataGrid  Grid.Row="1" x:Name="datagrid1" Margin="20" Padding="5" AutoGenerateColumns="True">
-        </DataGrid>
-     
+            </DataGrid>
+        
+
     </Grid>
 </Window>

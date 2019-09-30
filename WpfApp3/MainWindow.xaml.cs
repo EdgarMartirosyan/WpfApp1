@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -23,18 +25,25 @@ namespace WpfApp3
         public MainWindow()
         {
             InitializeComponent();
-           // datagrid1.ItemsSource = Processor.LoadInfo();
+          
         }
 
-      /*  private async void Loadinfo_Click(object sender, RoutedEventArgs e)
+       private  void Loadinfo_Click(object sender, RoutedEventArgs e)
         {
-            var loadinfo = await Processor.LoadInfo();
+            string URL = "https://www.contractor.de/api/?action=getJobsList&type=undefined&keyword";
 
+            HttpClient client = new HttpClient();
 
-           // textblock1.Text = loadinfo.Id;
+            client.BaseAddress = new Uri(URL);
 
-            datagrid1.ItemsSource = loadinfo.Id;
-           
-        }*/
+            var answer = client.GetAsync(URL).Result;
+
+            var JSON = answer.Content.ReadAsStringAsync().Result;
+
+            var UVs = JsonConvert.DeserializeObject<RootObject>(JSON);
+
+            this.datagrid1.ItemsSource = UVs.Response;
+
+        }
     }
 }

@@ -18,7 +18,8 @@ namespace WpfApp1
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    RootObject result = await response.Content.ReadAsAsync<RootObject>();                    
+                    RootObject result = await response.Content.ReadAsAsync<RootObject>();
+
                     return result.Results;
                 }
                 else
