@@ -33,7 +33,7 @@ namespace ConsoleApp2
 
             //FileStream file = File.Open(@"C:\Users\edgar.martirosyan\Desktop\testing\books.xml", FileMode.OpenOrCreate, FileAccess.Write);
 
-            using (FileStream stream = File.Open(@"C:\Users\edgar.martirosyan\Desktop\testing\books.xml", FileMode.OpenOrCreate, FileAccess.Write))
+            using (FileStream stream = File.OpenRead(@"C:\Users\edgar.martirosyan\Desktop\testing\books.xml"))
             {
                 doc.Load(stream);
             }
@@ -89,6 +89,23 @@ namespace ConsoleApp2
                 Console.WriteLine(node.OuterXml);
             }
         }
+        public static void CreateXmlTwo()
+        {
+            var xmlWriter = new XmlTextWriter(@"C:\Users\edgar.martirosyan\Desktop\testing\bookstwo.xml", null);
+
+            xmlWriter.WriteStartDocument();                  // Заголовок XML - <?xml version="1.0"?>
+            xmlWriter.WriteStartElement("ListOfBooks");      // Корневой элемент - <ListOfBooks>
+            xmlWriter.WriteStartElement("Book");             // Книга 1 - <Book
+            xmlWriter.WriteStartAttribute("FontSize");       // Атрибут - FontSize
+            xmlWriter.WriteString("8");
+            //  xmlWriter.WriteString("18");   // ="8"
+            xmlWriter.WriteEndAttribute();                   // >
+            xmlWriter.WriteString("Title-1");                // Title-1
+            xmlWriter.WriteEndElement();                     // </Book>
+            xmlWriter.WriteEndElement();                     // </ListOfBooks>
+
+            xmlWriter.Close();
+        }
 
 
         static void Main(string[] args)
@@ -96,11 +113,12 @@ namespace ConsoleApp2
 
 
 
-            
 
+
+             CreateXmlTwo();
 
             // ReadXml();
-            CreateXml();
+            // CreateXml();
             Console.WriteLine("Hello World!");
         }
     }

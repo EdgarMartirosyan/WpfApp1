@@ -14,7 +14,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Excel =Microsoft.Office.Interop.Excel;
+using System.Xml;
+using System.Xml.Linq;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace WpfApp7
 {
@@ -93,6 +95,73 @@ namespace WpfApp7
         {
             this.Close();
         }
+
+        private void BtnExport_Click(object sender, RoutedEventArgs e)
+        {
+
+            /*  var xmlWriter = new XmlTextWriter(@"C:\Users\edgar.martirosyan\Desktop\testing\bookstwo.xml", null);
+
+              xmlWriter.WriteStartDocument();                  // Заголовок XML - <?xml version="1.0"?>
+              xmlWriter.WriteStartElement("ListOfBooks");      // Корневой элемент - <ListOfBooks>
+              xmlWriter.WriteStartElement("Book");             // Книга 1 - <Book
+              xmlWriter.WriteStartAttribute("FontSize");       // Атрибут - FontSize
+              xmlWriter.WriteString("8");
+              //  xmlWriter.WriteString("18");   // ="8"
+              xmlWriter.WriteEndAttribute();                   // >
+              xmlWriter.WriteString("Title-1");                // Title-1
+              xmlWriter.WriteEndElement();                     // </Book>
+              xmlWriter.WriteEndElement();                     // </ListOfBooks>
+
+              xmlWriter.Close();*/
+            XmlDocCreater();
+
+           
+        }
+
+        public static void XmlDocCreater()
+        {
+            /* XDocument xmlDocument = new XDocument(
+                 new XDeclaration("1.0", "utf-8", "yes"),
+                 new XComment("Creating xml tree using linq to xml"),
+                 new XElement("Students",
+                 from invoce in Invoce.GetAllInvoces()
+                 select new XElement("Student", new XAttribute("Id",invoce.Id),
+                  new XElement("Name",invoce.Name),
+                  new XElement("Gender",invoce.Gender),
+                  new XElement("TotalMark",invoce.TotalMark)
+                 )));*/
+         XDocument xmlDocument = new XDocument(
+         new XDeclaration("1.0", "utf-8", "yes"),
+
+           //  new XElement("ExportedAccDocData", new XAttribute("xmlns","http://www.taxservice.am/tp3/invoice/definitions"),
+           new XElement("AccountingDocument", new XAttribute("Version", "1.0"),
+           new XElement("Type", 3),
+           new XElement("GeneralInfo",
+                new XElement("EcrReceipt"),
+                from invoce in Invoce.GetAllInvoces()
+                select new XElement("DeliveryDate", invoce.DeliveryDate),
+                     new XElement("Procedure", 1),
+                     new XElement("DealInfo",
+                        from invoceo in Invoce.GetAllInvoces()
+                        select new XElement("DealDate", invoceo.DealDate),
+                        from invoceo in Invoce.GetAllInvoces()
+                        select new XElement("DealNumber", invoceo.DealNumber)),
+                        new XElement("AdditionalData")),
+           new XElement("SupplierInfo",
+               from invocet in Invoce.GetAllInvoces()
+               select new XElement("VATNumber", invocet.VATNumber),
+               new XElement("Taxpayer",
+                   new XElement("TIN", "00031904"),
+                   new XElement("Name", "ՆԱԻՐԻ ԻՆՇՈՒՐԱՆՍ ԱՊԱՀՈՎԱԳՐԱԿԱՆ Սահմանափակ պատասխանատվությամբ ընկերություն (ՍՊԸ)"),
+                   new XElement("Address", "ԵՐԵՎԱՆ ԿԵՆՏՐՈՆ ԿԵՆՏՐՈՆ ԹԱՂԱՄԱՍ Վ.Սարգսյան 10 110տար"),
+                   new XElement("BankAccount",
+                       new XElement("BankName", "Ամերիաբանկ ՓԲԸ"), 
+                       new XElement("BankAccountNumber", "1570001164650300"))))
+            ));
+            xmlDocument.Save(@"C:\Users\edgar.martirosyan\Desktop\testing\booksfree.xml");
+        }
+
+
     }
 }
 
