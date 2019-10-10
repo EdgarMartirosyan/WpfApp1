@@ -115,12 +115,12 @@ namespace WpfApp7
               xmlWriter.Close();*/
             XmlDocCreater();
 
-           
+
         }
 
         public static void XmlDocCreater()
         {
-            /* XDocument xmlDocument = new XDocument(
+           /* XDocument xmlDocument = new XDocument(
                  new XDeclaration("1.0", "utf-8", "yes"),
                  new XComment("Creating xml tree using linq to xml"),
                  new XElement("Students",
@@ -130,35 +130,74 @@ namespace WpfApp7
                   new XElement("Gender",invoce.Gender),
                   new XElement("TotalMark",invoce.TotalMark)
                  )));*/
-         XDocument xmlDocument = new XDocument(
-         new XDeclaration("1.0", "utf-8", "yes"),
+            XDocument xmlDocument = new XDocument(
+              //new XDeclaration("1.0", "utf-8", "yes"),
 
-           //  new XElement("ExportedAccDocData", new XAttribute("xmlns","http://www.taxservice.am/tp3/invoice/definitions"),
-           new XElement("AccountingDocument", new XAttribute("Version", "1.0"),
-           new XElement("Type", 3),
+               new XElement("ExportedAccDocData", new XAttribute("xmlns", ""),
+              new XElement("AccountingDocument",
+              
+               new XAttribute("Version", "1.0"),
+              new XElement("Type", 3),
+            #region GeneralInfo
            new XElement("GeneralInfo",
-                new XElement("EcrReceipt"),
-                from invoce in Invoce.GetAllInvoces()
-                select new XElement("DeliveryDate", invoce.DeliveryDate),
-                     new XElement("Procedure", 1),
-                     new XElement("DealInfo",
-                        from invoceo in Invoce.GetAllInvoces()
-                        select new XElement("DealDate", invoceo.DealDate),
-                        from invoceo in Invoce.GetAllInvoces()
-                        select new XElement("DealNumber", invoceo.DealNumber)),
-                        new XElement("AdditionalData")),
+                   new XElement("EcrReceipt",""),
+                   from invoce in Invoce.GetAllInvoces()
+                   select new XElement("DeliveryDate", invoce.DeliveryDate),
+                        new XElement("Procedure", 1),
+                        new XElement("DealInfo",
+                           from invoceo in Invoce.GetAllInvoces()
+                           select new XElement("DealDate", invoceo.DealDate),
+                           from invoceo in Invoce.GetAllInvoces()
+                           select new XElement("DealNumber", invoceo.DealNumber)),
+                           new XElement("AdditionalData","")),
+            #endregion
+            #region SupplierInfo
            new XElement("SupplierInfo",
-               from invocet in Invoce.GetAllInvoces()
-               select new XElement("VATNumber", invocet.VATNumber),
-               new XElement("Taxpayer",
-                   new XElement("TIN", "00031904"),
-                   new XElement("Name", "ՆԱԻՐԻ ԻՆՇՈՒՐԱՆՍ ԱՊԱՀՈՎԱԳՐԱԿԱՆ Սահմանափակ պատասխանատվությամբ ընկերություն (ՍՊԸ)"),
-                   new XElement("Address", "ԵՐԵՎԱՆ ԿԵՆՏՐՈՆ ԿԵՆՏՐՈՆ ԹԱՂԱՄԱՍ Վ.Սարգսյան 10 110տար"),
-                   new XElement("BankAccount",
-                       new XElement("BankName", "Ամերիաբանկ ՓԲԸ"), 
-                       new XElement("BankAccountNumber", "1570001164650300"))))
-            ));
+                  from invocet in Invoce.GetAllInvoces()
+                  select new XElement("VATNumber", invocet.VATNumber),
+                  new XElement("Taxpayer",
+                      new XElement("TIN", "00031904"),
+                      new XElement("Name", "ՆԱԻՐԻ ԻՆՇՈՒՐԱՆՍ ԱՊԱՀՈՎԱԳՐԱԿԱՆ Սահմանափակ պատասխանատվությամբ ընկերություն (ՍՊԸ)"),
+                      new XElement("Address", "ԵՐԵՎԱՆ ԿԵՆՏՐՈՆ ԿԵՆՏՐՈՆ ԹԱՂԱՄԱՍ Վ.Սարգսյան 10 110տար"),
+                      new XElement("BankAccount",
+                          new XElement("BankName", "Ամերիաբանկ ՓԲԸ"),
+                          new XElement("BankAccountNumber", "1570001164650300")))),
+            #endregion
+            #region BuyerInfo
+           new XElement("BuyerInfo",
+              new XElement("Taxpayer",
+               from invoce in Invoce.GetAllInvoces()
+               select new XElement("TIN", invoce.TIN),
+               new XElement("Name",""),
+               new XElement("Address",""),
+               new XElement("BankAccount",
+               from invoce in Invoce.GetAllInvoces()
+               select new XElement("BankName", invoce.BuyerBankName),
+               from invoce in Invoce.GetAllInvoces()
+               select new XElement("BankAccountNumber", invoce.BuyerBankAccountNumber)),
+               new XElement("TinNotRequired", "false"))),
+            #endregion
+            #region GoodsInfo
+            new XElement("GoodsInfo",new XElement("Good",
+            from invoce in Invoce.GetAllInvoces()
+            select new XElement("Description",invoce.GoodDescription),
+            new XElement("Unit", "դրամ"),
+            from invoce in Invoce.GetAllInvoces()
+            select new XElement("Amount",invoce.GoodAmount),
+            from invoce in Invoce.GetAllInvoces()
+            select new XElement("PricePerUnit",invoce.PricePerUnit),
+            from invoce in Invoce.GetAllInvoces()
+            select new XElement("Price",invoce.Price),
+            from invoce in Invoce.GetAllInvoces()
+            select new XElement("TotalPrice",invoce.Price)),
+            new XElement("Total",
+            from invoce in Invoce.GetAllInvoces()
+            select new XElement("TotalPrice", invoce.Price)
+            ))
+            #endregion
+            )));
             xmlDocument.Save(@"C:\Users\edgar.martirosyan\Desktop\testing\booksfree.xml");
+            MessageBox.Show("xml ֆայլը պահպանված է");
         }
 
 
