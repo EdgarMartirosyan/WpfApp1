@@ -17,6 +17,9 @@ using System.Windows.Shapes;
 using System.Xml;
 using System.Xml.Linq;
 using Excel = Microsoft.Office.Interop.Excel;
+using System.IO;
+using ExcelDataReader;
+
 
 namespace WpfApp7
 {
@@ -34,7 +37,7 @@ namespace WpfApp7
         {
             OpenFileDialog openfile = new OpenFileDialog();
             openfile.DefaultExt = ".xlsx";
-            openfile.Filter = "(.xlsx)|*.xlsx";
+            openfile.Filter = "excel files|*.xls;*.xlsx;*.xlsm";
             //openfile.ShowDialog();
 
             var browsefile = openfile.ShowDialog();
@@ -131,68 +134,58 @@ namespace WpfApp7
                   new XElement("TotalMark",invoce.TotalMark)
                  )));*/
             XDocument xmlDocument = new XDocument(
-              //new XDeclaration("1.0", "utf-8", "yes"),
-
-               new XElement("ExportedAccDocData", new XAttribute("xmlns", ""),
-              new XElement("AccountingDocument",
+              // new XDeclaration("1.0", "utf-8", "yes"),
+               
+               new XElement("ExportedAccDocData",
+               new XAttribute("xmlns", ""),
+                from invoce in Invoce.GetAllInvoces()
+                select
+                new XElement("AccountingDocument",
               
                new XAttribute("Version", "1.0"),
-              new XElement("Type", 3),
+               new XElement("Type", 3),
             #region GeneralInfo
-           new XElement("GeneralInfo",
-                   new XElement("EcrReceipt",""),
-                   from invoce in Invoce.GetAllInvoces()
-                   select new XElement("DeliveryDate", invoce.DeliveryDate),
-                        new XElement("Procedure", 1),
-                        new XElement("DealInfo",
-                           from invoceo in Invoce.GetAllInvoces()
-                           select new XElement("DealDate", invoceo.DealDate),
-                           from invoceo in Invoce.GetAllInvoces()
-                           select new XElement("DealNumber", invoceo.DealNumber)),
-                           new XElement("AdditionalData","")),
+               new XElement("GeneralInfo",
+               new XElement("EcrReceipt",""),                 
+               new XElement("DeliveryDate", invoce.DeliveryDate),
+               new XElement("Procedure", 1),
+               new XElement("DealInfo",                         
+               new XElement("DealDate", invoce.DealDate),                       
+               new XElement("DealNumber", invoce.DealNumber)),
+               new XElement("AdditionalData","")),
             #endregion
             #region SupplierInfo
-           new XElement("SupplierInfo",
-                  from invocet in Invoce.GetAllInvoces()
-                  select new XElement("VATNumber", invocet.VATNumber),
-                  new XElement("Taxpayer",
-                      new XElement("TIN", "00031904"),
-                      new XElement("Name", "ՆԱԻՐԻ ԻՆՇՈՒՐԱՆՍ ԱՊԱՀՈՎԱԳՐԱԿԱՆ Սահմանափակ պատասխանատվությամբ ընկերություն (ՍՊԸ)"),
-                      new XElement("Address", "ԵՐԵՎԱՆ ԿԵՆՏՐՈՆ ԿԵՆՏՐՈՆ ԹԱՂԱՄԱՍ Վ.Սարգսյան 10 110տար"),
-                      new XElement("BankAccount",
-                          new XElement("BankName", "Ամերիաբանկ ՓԲԸ"),
-                          new XElement("BankAccountNumber", "1570001164650300")))),
+               new XElement("SupplierInfo",              
+               new XElement("VATNumber", invoce.VATNumber),
+               new XElement("Taxpayer",
+               new XElement("TIN", "00031904"),
+               new XElement("Name", "ՆԱԻՐԻ ԻՆՇՈՒՐԱՆՍ ԱՊԱՀՈՎԱԳՐԱԿԱՆ Սահմանափակ պատասխանատվությամբ ընկերություն (ՍՊԸ)"),
+               new XElement("Address", "ԵՐԵՎԱՆ ԿԵՆՏՐՈՆ ԿԵՆՏՐՈՆ ԹԱՂԱՄԱՍ Վ.Սարգսյան 10 110տար"),
+               new XElement("BankAccount",
+               new XElement("BankName", "Ամերիաբանկ ՓԲԸ"),
+               new XElement("BankAccountNumber", "1570001164650300")))),
             #endregion
             #region BuyerInfo
-           new XElement("BuyerInfo",
-              new XElement("Taxpayer",
-               from invoce in Invoce.GetAllInvoces()
-               select new XElement("TIN", invoce.TIN),
-               new XElement("Name",""),
-               new XElement("Address",""),
-               new XElement("BankAccount",
-               from invoce in Invoce.GetAllInvoces()
-               select new XElement("BankName", invoce.BuyerBankName),
-               from invoce in Invoce.GetAllInvoces()
-               select new XElement("BankAccountNumber", invoce.BuyerBankAccountNumber)),
-               new XElement("TinNotRequired", "false"))),
+              new XElement("BuyerInfo",
+              new XElement("Taxpayer",              
+              new XElement("TIN", invoce.TIN),
+              new XElement("Name",""),
+              new XElement("Address",""),
+              new XElement("BankAccount",            
+              new XElement("BankName", invoce.BuyerBankName),             
+              new XElement("BankAccountNumber", invoce.BuyerBankAccountNumber)),
+              new XElement("TinNotRequired", "false"))),
             #endregion
             #region GoodsInfo
-            new XElement("GoodsInfo",new XElement("Good",
-            from invoce in Invoce.GetAllInvoces()
-            select new XElement("Description",invoce.GoodDescription),
-            new XElement("Unit", "դրամ"),
-            from invoce in Invoce.GetAllInvoces()
-            select new XElement("Amount",invoce.GoodAmount),
-            from invoce in Invoce.GetAllInvoces()
-            select new XElement("PricePerUnit",invoce.PricePerUnit),
-            from invoce in Invoce.GetAllInvoces()
-            select new XElement("Price",invoce.Price),
-            from invoce in Invoce.GetAllInvoces()
-            select new XElement("TotalPrice",invoce.Price)),
-            new XElement("Total",
-            from invoce in Invoce.GetAllInvoces()
-            select new XElement("TotalPrice", invoce.Price)
+              new XElement("GoodsInfo",new XElement("Good",         
+              new XElement("Description",invoce.GoodDescription),
+              new XElement("Unit", "դրամ"),         
+              new XElement("Amount",invoce.GoodAmount),          
+              new XElement("PricePerUnit",invoce.PricePerUnit),          
+              new XElement("Price",invoce.Price),           
+              new XElement("TotalPrice",invoce.Price)),
+              new XElement("Total",          
+              new XElement("TotalPrice", invoce.Price)
             ))
             #endregion
             )));
@@ -200,7 +193,52 @@ namespace WpfApp7
             MessageBox.Show("xml ֆայլը պահպանված է");
         }
 
+        private void btnImport_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog open = new OpenFileDialog();
+            open.Filter = "excel files|*.xls;*.xlsx;*.xlsm";
 
+
+            open.ShowDialog();
+           
+                
+            FileStream stream = new FileStream(open.FileName, FileMode.Open);
+            IExcelDataReader excelReader = ExcelReaderFactory.CreateOpenXmlReader(stream);
+            DataSet result = excelReader.AsDataSet();
+
+            DataClasses1DataContext conn = new DataClasses1DataContext();
+            foreach (DataTable table in result.Tables)
+            {
+                foreach (DataRow dr in table.Rows)
+                {
+                    invoceSecond addtable = new invoceSecond()
+                    {
+                        Id = Convert.ToString(dr[0]),
+                        DeliveryDate=Convert.ToString(dr[1]),
+                        DealDate=Convert.ToString(dr[2]),
+                        DealNumber = Convert.ToString(dr[3]),
+                        TIN= Convert.ToString(dr[4]),
+                        BuyerBankName= Convert.ToString(dr[5]),
+                        BuyerBankAccountNumber= Convert.ToString(dr[6]),
+                        GoodDescription= Convert.ToString(dr[7]),
+                        GoodAmount=Convert.ToInt32(dr[8]),
+                        PricePerUnit= Convert.ToInt32(dr[9]),
+                        Price= Convert.ToInt32(dr[10]),
+                    };
+                    conn.invoceSeconds.InsertOnSubmit(addtable);
+                }
+            }
+            conn.SubmitChanges();
+
+            excelReader.Close();
+            stream.Close();
+            MessageBox.Show("lyox lyava");
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
     }
 }
 

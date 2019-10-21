@@ -31,11 +31,12 @@ namespace WpfApp7
 
         public static Invoce[] GetAllInvoces()
         {
-            Invoce[] invoces = new Invoce[1];
+            Invoce[] invoces = new Invoce[2];
             invoces[0] = new Invoce
             {
-                DeliveryDate = new DateTime(2019, 10, 08,04,00,00),
-                DealDate = new DateTime(2019, 01, 01,04,00,00),
+                
+                DeliveryDate = new DateTime(2019, 10, 08 ),
+                DealDate = new DateTime(2019, 01, 01  ),
                 DealNumber = "00031904-ԱՊ",
                 VATNumber = "00031904/1",
                 TIN = "02507171",
@@ -46,6 +47,22 @@ namespace WpfApp7
                 PricePerUnit = 46558888,
                 Price= 46558888
             };
+            invoces[1] = new Invoce
+            {
+                
+                DeliveryDate = new DateTime(2019, 11, 08),
+                DealDate = new DateTime(2019, 01, 01),
+                DealNumber = "00031904-ԱՊ",
+                VATNumber = "00031904/1",
+                TIN = "02507171",
+                BuyerBankName = "ՀՀ ՖՆ Աշխատակազմի գործառնական վարչություն",
+                BuyerBankAccountNumber = "900011001931",
+                GoodDescription = "Ապահովագրավճար համաձայն արձանագրություն 8, առ 30.09.2019թ.",
+                GoodAmount = 1,
+                PricePerUnit = 46558888,
+                Price = 46558888
+            };
+
 
             return invoces;
         }

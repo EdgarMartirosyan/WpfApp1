@@ -7,19 +7,45 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="550" Width="900" WindowStartupLocation="CenterScreen" WindowStyle="None" ResizeMode="NoResize">
     <Grid>
-        <Border BorderBrush="Black" BorderThickness="5">
-            <StackPanel HorizontalAlignment="Center">
-                <Border BorderBrush="Black" BorderThickness="0,0,0,5" Height="60" HorizontalAlignment="Center" VerticalAlignment="Center" Width="890">
-                    <WrapPanel HorizontalAlignment="Left" VerticalAlignment="Center">
-                        <TextBox Height="30" Name="txtFilePath" Width="450" Margin="10,0,10,0" FontSize="15" Opacity="1" />
-                        <Button Content="Browse Excel" Name="btnOpen" Width="120" FontSize="15" Height="30" FontWeight="Bold" Click="btnOpen_Click" />
-                        <Button Content="Export XML" Name="btnExport" FontSize="15" FontWeight="Black" Margin="10,0,10,0" Click="BtnExport_Click" Width="95"></Button>
-                        <Button Content="Close" Name="btnClose" FontSize="15" Height="30" FontWeight="Bold"  Width="75" Margin="10,0,10,0" Background="#FFEFE5E5" Click="btnClose_Click" />
-                    </WrapPanel>
+        <TabControl x:Name="testone">
+            <TabItem Header="pageone">
+                <Border BorderBrush="Black" BorderThickness="5">
+                    <StackPanel HorizontalAlignment="Center">
+                        <Border BorderBrush="Black" BorderThickness="0,0,0,5" Height="60" HorizontalAlignment="Center" VerticalAlignment="Center" Width="890">
+                            <WrapPanel HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <TextBox Height="30" Name="txtFilePath" Width="390" Margin="10,0,10,0" FontSize="15" Opacity="1" />
+                                <Button Content="Browse Excel" Name="btnOpen" Width="120" FontSize="15" Height="30" FontWeight="Bold" Click="btnOpen_Click" />
+                                <Button Content="Export XML" Name="btnExport" FontSize="15" FontWeight="Black" Margin="10,0,10,0" Click="BtnExport_Click" Width="95"></Button>
+                                <Button Content="Close" Name="btnClose" FontSize="15" Height="30" FontWeight="Bold"  Width="75" Margin="10,0,10,0" Background="#FFEFE5E5" Click="btnClose_Click" />
+                                <Button Content="Import excel" Name="btnImport" Width="120" FontSize="15" Height="30" FontWeight="Bold" Click="btnImport_Click" />
+                            </WrapPanel>
+                        </Border>
+                        <Label Name="txtIns" Content="View Uploaded records to DataGridView" FontSize="15" FontWeight="Bold" Margin="15" HorizontalAlignment="Center" />
+                        <DataGrid AutoGenerateColumns="True" IsReadOnly="True" HorizontalAlignment="Center" Name="dtGrid" VerticalAlignment="Center" />
+                    </StackPanel>
                 </Border>
-                <Label Name="txtIns" Content="View Uploaded records to DataGridView" FontSize="15" FontWeight="Bold" Margin="15" HorizontalAlignment="Center" />
-                <DataGrid AutoGenerateColumns="True" IsReadOnly="True" HorizontalAlignment="Center" Name="dtGrid" VerticalAlignment="Center" />
-            </StackPanel>
-        </Border>
+            </TabItem>
+            <TabItem Header="pagetwo">
+                <Border BorderBrush="Green" BorderThickness="5">
+                    <StackPanel>
+                        <DataGrid  Margin="10,10,10,10"  AutoGenerateColumns="True" HorizontalAlignment="Center" Name="dtGridtwo" Width="830" Height="320"/>
+                        <WrapPanel Margin="27,10,0,10" HorizontalAlignment="Left" VerticalAlignment="Center" Width="830" >
+                            <Label Content="file name" Margin="10,10,0,10"  />
+                            <TextBox Margin="10,10,10,10" Width="691"/>
+                            <Button Content="..." Margin="10,10,10,10" Width="25" Click="Button_Click" />
+                        </WrapPanel>
+                        <WrapPanel Margin="27,10,0,10" HorizontalAlignment="Left" VerticalAlignment="Center" Width="830" >
+                            <Label Content="sheet" Margin="10,10,0,10" />
+                            <ComboBox Margin="27,10,10,10" Width="139" />
+                        </WrapPanel>
+
+                    </StackPanel>
+                </Border>
+            </TabItem>
+
+
+
+
+        </TabControl>
     </Grid>
 </Window>
